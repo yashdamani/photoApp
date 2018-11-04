@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <style>
+        body {
+        background-color: #33CC66;
+    }
+
+    #form1 {
+        margin-left: 40%;
+        padding-top: 2.5%;
+    }
+
+    #form2 {
+        margin-left: 40%;
+        padding-top: 2.5%;
+    }
+  #square1 {
+      width: 30%;
+      position: absolute;
+        height: 75%;
+        margin-left: 35%;
+        margin-top: 10%;
+        background: #333333;
+        border-radius: 5%;
+    }
+
+    #square2 {
+        width: 30%;
+        position: absolute;
+        height: 50%;
+        margin-left: 35%;
+        margin-top: 10%;
+        background: #333333;
+        border-radius: 5%;
+    }
+    .title h2 {
+        display: inline-block;
+        color: white;
+        cursor: pointer;
+
+    }
+  </style>
+    <div id="square1" style="display: block;">
+        <h2 class="ui center aligned icon header">
+        <i style="background-color: #666666; margin-top: -10%" class="circular users icon"></i>
+        <div class="title">
+            <h2 id="register" style="margin-right: 10%" onclick="toggle(this.id)">Register</h2>
+        <h2 id="signin" onclick="toggle(this.id)">Sign In</h2>
+    </div>
+    </h2>
+    <form id="form1" class="ui form" method="post">
+        <div class="field" style="margin-left: -50%">
+            <label style="color:#666666">Full Name</label>
+            <input align="left" style="width:90%; background-color: #666666; color: white;" type="text" name="f_name">
+        </div>
+        <div class="field" style="margin-left: -50%">
+            <label style="color:#666666">Email</label>
+            <input align="left" style="width:90%; background-color: #666666; color: white;" type="email" name="email">
+        </div>
+        <div class="field" style="margin-left: -50%">
+            <label style="color:#666666">Password</label>
+            <input align="left" style="width:90%; background-color: #666666; color: white;" type="password" name="f_password">
+        </div>
+        <div class="field" style="margin-left: -50%">
+            <label style=" color:#666666">Re-type Password</label>
+            <input align="left" style="width:90%; background-color: #666666; color: white;" type="password" name="c_password">
+    
+            <button style="background-color: #33CC66; margin-left: 30%; margin-top: 5%; margin-bottom: 5%" class="ui button" type="submit"><span style="color:#FFFFFF">Submit</span></button>
+            <center><a style="text-decoration:underline; color: #666; margin-right: 15%;" href="">FORGOT YOUR PASSWORD?</a></center>
+        </div>
+    </form>
+    </div>
+    <div id="square2" style="display: none;">
+        <h2 class="ui center aligned icon header">
+        <i style="background-color: #666666; margin-top: -10%" class="circular users icon"></i>
+        </h2>
+        <div class="title">
+            <h2 id="register" style="margin-right: 20%; margin-left: 15%" onclick="toggle(this.id)">Register</h2>
+            <h2 id="signin" onclick="toggle(this.id)">Sign In</h2>
+        </div>
+        <form id="form2" class="ui form" method="post">
+            <div class="field" style="margin-left: -50%">
+                <label style="color:#666666">EMAIL</label>
+                <input align="left" style="width:90%; background-color: #666666; color: white;" type="text" name="email">
+            </div>
+            <div class="field" style="margin-left: -50%">
+                <label style=" color:#666666">PASSWORD</label>
+                <input align="left" style="width:90%; background-color: #666666; color: white;" type="password" name="password">
+                <button style="background-color: #33CC66; margin-left: 30%; margin-top: 5%; margin-bottom: 5%" class="ui button" type="submit"><span style="color:#FFFFFF">Submit</span></button>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+    function toggle(clicked_Id) {
+        var click = document.getElementById(clicked_Id).id;
+        if (click === 'register') {
+            document.getElementById('square1').style.display = "block";
+            document.getElementById('square2').style.display = "none";
+        }
+        if (click === 'signin') {
+            document.getElementById('square2').style.display = "block";
+            document.getElementById('square1').style.display = "none";
+        }
+    }
+    </script>
+</body>
+
+</html>
