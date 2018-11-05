@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-var mongoose = require("mongoose");
 var validator = require("express-validator");
 var nodeMailer = require("nodemailer");
-var randomString = require("randomstring");
 var jwt = require("jsonwebtoken");
 
 var db = require("./models/dbconnect");
