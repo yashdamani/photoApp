@@ -2,6 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var validator = require("express-validator");
+var nodeMailer = require("nodemailer");
+var randomString = require("randomstring");
+var jwt = require("jsonwebtoken");
 
 var db = require("./models/dbconnect");
 var User = require("./models/register_users");
@@ -19,6 +22,16 @@ app.get("/", function(req, res) {
 
 app.get("/register-login", function(req, res) {
   res.sendFile(__dirname + "/register_form.html");
+});
+
+var transporter = nodeMailer.createTransport({
+  host: "gains.arrowsupercloud.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "_mainaccount@yashdamani.com",
+    pass: "9sg1m1DP7v"
+  }
 });
 
 app.post("/register-login", function(req, res) {
@@ -41,16 +54,105 @@ app.post("/register-login", function(req, res) {
     }
     res.send(result);
   } else {
+    var vToken = jwt.sign({ email: req.body.email }, "happy", {
+      expiresIn: 60
+    });
+    console.log(vToken);
     var user = new User();
     user.fullname = req.body.fullname;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.token = vToken;
 
     user.save(function(err) {
       if (err) throw err;
       res.json({ Status: "Success" });
     });
+
+    var mailOptions = {
+      from: '"Yash Damani" <tech@yashdamani.com',
+      to: user.email,
+      subject: "Verification mail",
+      text:
+        "This message is from yashdamani.com, checking for verification of registration",
+      html: `<p>Hello,</p>
+              <p>Please click on the <a href="http://192.168.0.138:3000/verificationLink/${
+                user.token
+              }">link</a> to verify the account : </p>`
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent 1: %s", info.messageId);
+    });
   }
+});
+
+app.post("/resendEmail", function(req, res) {
+  User.findOne({ email: req.body.email }, function(err, user) {
+    if (!user) res.send("User not found");
+    else {
+      const vToken = jwt.sign({ email: req.body.email }, "happy", {
+        expiresIn: 60
+      });
+      user.token = vToken;
+      user.save(function(err) {
+        if (err) throw err;
+        res.json({ Status: "token updated" });
+      });
+
+      const mailOptions = {
+        from: '"Yash Damani" <tech@yashdamani.com',
+        to: user.email,
+        subject: "Verification mail",
+        text:
+          "This message is from yashdamani.com, checking for verification of registration",
+        html: `<p>Hello,</p>
+                <p>Please click on the <a href="http://192.168.0.138:3000/verificationLink/${
+                  user.token
+                }">link</a> to verify the account : </p>`
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log("Message sent 2: %s", info.messageId);
+      });
+    }
+  });
+});
+
+app.get("/verificationLink/:code", function(req, res) {
+  User.findOne({ token: req.params.code }, function(err, user) {
+    if (!user)
+      res.send(
+        '<h1>Token expired! Please resend the confirmation mail! </br> <a href="">Click here </a>to resend email.</h1><form method="POST" action="/resendEmail"></br><input type="email" name="email"><button type="submit">Submit</button></form>'
+      );
+    else {
+      jwt.verify(req.params.code, "happy", function(err, decoded) {
+        if (err) {
+          user.token = "";
+          user.save(function(err) {
+            if (err) throw err;
+            res.json({ Status: "token updated" });
+          });
+          res.send(
+            '<h1>Token expired! Please resend the confirmation mail! </br> <a href="">Click here </a>to resend email.</h1><form  method="POST" action="/resendEmail"></br><input type="email" name="email"><button type="submit">Submit</button></form>'
+          );
+        } else {
+          user.token = "";
+          user.save(function(err) {
+            if (err) throw err;
+            res.json({ Status: "Success" });
+          });
+          res.send(`<h1>${user.fullname}'s account verified!</h1>`);
+        }
+      });
+    }
+  });
 });
 
 app.delete("/register-login:id", function(err, users) {
