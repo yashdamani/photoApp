@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 var validator = require("express-validator");
 var nodeMailer = require("nodemailer");
 var jwt = require("jsonwebtoken");
+const path = require("path");
 
 var db = require("./models/dbconnect");
 var User = require("./models/register_users");
@@ -53,9 +54,8 @@ app.post("/register-login", function(req, res) {
     res.send(result);
   } else {
     var vToken = jwt.sign({ email: req.body.email }, "happy", {
-      expiresIn: 60
+      expiresIn: 30
     });
-    console.log(vToken);
     var user = new User();
     user.fullname = req.body.fullname;
     user.email = req.body.email;
@@ -87,20 +87,22 @@ app.post("/register-login", function(req, res) {
     });
   }
 });
+app.get("/resendEmail", (req, res) => {
+  res.sendFile(path.join(__dirname + "/emailPage.html"));
+});
 
 app.post("/resendEmail", function(req, res) {
   User.findOne({ email: req.body.email }, function(err, user) {
     if (!user) res.send("User not found");
     else {
       const vToken = jwt.sign({ email: req.body.email }, "happy", {
-        expiresIn: 60
+        expiresIn: 30
       });
       user.token = vToken;
       user.save(function(err) {
         if (err) throw err;
-        res.json({ Status: "token updated" });
+        console.log("token updated");
       });
-
       const mailOptions = {
         from: '"Yash Damani" <tech@yashdamani.com',
         to: user.email,
@@ -125,26 +127,23 @@ app.post("/resendEmail", function(req, res) {
 
 app.get("/verificationLink/:code", function(req, res) {
   User.findOne({ token: req.params.code }, function(err, user) {
-    if (!user)
-      res.send(
-        '<h1>Token expired! Please resend the confirmation mail! </br> <a href="">Click here </a>to resend email.</h1><form method="POST" action="/resendEmail"></br><input type="email" name="email"><button type="submit">Submit</button></form>'
-      );
+    if (!user) res.redirect("/resendEmail");
     else {
       jwt.verify(req.params.code, "happy", function(err, decoded) {
         if (err) {
           user.token = "";
           user.save(function(err) {
             if (err) throw err;
-            res.json({ Status: "token updated" });
+            console.log("token updated");
           });
-          res.send(
-            '<h1>Token expired! Please resend the confirmation mail! </br> <a href="">Click here </a>to resend email.</h1><form  method="POST" action="/resendEmail"></br><input type="email" name="email"><button type="submit">Submit</button></form>'
-          );
+
+          res.redirect("/resendEmail");
         } else {
           user.token = "";
+          user.active = true;
           user.save(function(err) {
             if (err) throw err;
-            res.json({ Status: "Success" });
+            console.log("Success");
           });
           res.send(`<h1>${user.fullname}'s account verified!</h1>`);
         }
@@ -153,27 +152,27 @@ app.get("/verificationLink/:code", function(req, res) {
   });
 });
 
-app.delete("/register-login:id", function(err, users) {
-  User.remove({ emai: req.params.id }, function(err) {
-    if (err) throw err;
-    res.json({ Status: "Delete Successful" });
-  });
-});
+// app.delete("/register-login:id", function(err, users) {
+//   User.remove({ emai: req.params.id }, function(err) {
+//     if (err) throw err;
+//     res.json({ Status: "Delete Successful" });
+//   });
+// });
 
-app.put("/register-login:id", function(req, res) {
-  User.findById(req.params.id, function(err, users) {
-    if (err) throw err;
+// app.put("/register-login:id", function(req, res) {
+//   User.findById(req.params.id, function(err, users) {
+//     if (err) throw err;
 
-    user.email = req.body.email;
-    user.password = req.body.f_password;
-    user.confirmed_password = req.body.c_password;
+//     user.email = req.body.email;
+//     user.password = req.body.f_password;
+//     user.confirmed_password = req.body.c_password;
 
-    user.save(function(err) {
-      if (err) throw err;
-      res.json(users);
-    });
-  });
-});
+//     user.save(function(err) {
+//       if (err) throw err;
+//       res.json(users);
+//     });
+//   });
+// });
 
 app.listen(port, function(err) {
   if (err) throw err;

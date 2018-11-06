@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Email Page</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<h1>Link expired! Please enter your email to get the confirmation email again</h1>
+	<form method="POST" action="/resendEmail">
+	<div class="ui form segment">
+  		<div class="field">
+    		<label>Email</label>
+    		<div class="ui left labeled icon input">
+     			 <input style="width: 50%" type="email" name="email" placeholder="email">
+     		 </div>
+    	</div>
+  	</div>
+	
+	<button type="submit" class="ui blue submit button">Send</button>
+	</form>
+
+</body>
+</html>

@@ -19,6 +19,10 @@ var UserSchema = mongoose.Schema({
 
   token: {
     type: String
+  },
+
+  active: {
+    type: Boolean
   }
 });
 
