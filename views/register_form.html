@@ -5,6 +5,7 @@
     <title>Register</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
@@ -35,7 +36,7 @@
     #square2 {
         width: 30%;
         position: absolute;
-        height: 50%;
+        height: 60%;
         margin-left: 35%;
         margin-top: 10%;
         background: #333333;
@@ -45,6 +46,12 @@
         display: inline-block;
         color: white;
         cursor: pointer;
+    }
+    .fb-login-button{
+        padding-bottom: 50%;
+    }
+    #googleb{
+        margin-left: 20%;
 
     }
   </style>
@@ -56,7 +63,7 @@
         <h2 id="signin" onclick="toggle(this.id)">Sign In</h2>
     </div>
     </h2>
-    <form id="form1" class="ui form" method="post">
+    <form id="form1" class="ui form" method="POST", action="/register-login">
         <div class="field" style="margin-left: -50%">
             <label style="color:#666666">Full Name</label>
             <input align="left" style="width:90%; background-color: #666666; color: white;" type="text" name="f_name">
@@ -72,9 +79,7 @@
         <div class="field" style="margin-left: -50%">
             <label style=" color:#666666">Re-type Password</label>
             <input align="left" style="width:90%; background-color: #666666; color: white;" type="password" name="c_password">
-    
             <button style="background-color: #33CC66; margin-left: 30%; margin-top: 5%; margin-bottom: 5%" class="ui button" type="submit"><span style="color:#FFFFFF">Submit</span></button>
-            <center><a style="text-decoration:underline; color: #666; margin-right: 15%;" href="">FORGOT YOUR PASSWORD?</a></center>
         </div>
     </form>
     </div>
@@ -86,7 +91,7 @@
             <h2 id="register" style="margin-right: 20%; margin-left: 15%" onclick="toggle(this.id)">Register</h2>
             <h2 id="signin" onclick="toggle(this.id)">Sign In</h2>
         </div>
-        <form id="form2" class="ui form" method="post">
+        <form id="form2" class="ui form" method="POST", action="/login">
             <div class="field" style="margin-left: -50%">
                 <label style="color:#666666">EMAIL</label>
                 <input align="left" style="width:90%; background-color: #666666; color: white;" type="text" name="email">
@@ -95,6 +100,9 @@
                 <label style=" color:#666666">PASSWORD</label>
                 <input align="left" style="width:90%; background-color: #666666; color: white;" type="password" name="password">
                 <button style="background-color: #33CC66; margin-left: 30%; margin-top: 5%; margin-bottom: 5%" class="ui button" type="submit"><span style="color:#FFFFFF">Submit</span></button>
+                <button style="background-color: #2962FF;" id="googleb" class="ui button" onclick="location.href='/auth/google'" type="button"><span style="color:#FFFFFF">Google</span></button>
+                <button style="background-color: #3B5998 ;" id="facebookb" class="ui button" onclick="location.href='/auth/facebook'" type="button"><span style="color:#FFFFFF">Facebook</span></button>
+
             </div>
         </form>
     </div>
@@ -110,7 +118,9 @@
             document.getElementById('square1').style.display = "none";
         }
     }
+    
     </script>
+    
 </body>
 
 </html>

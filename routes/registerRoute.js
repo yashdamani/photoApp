@@ -11,7 +11,7 @@ Router.get("/", function(req, res) {
 }).post("/", function(req, res) {
   req
     .checkBody("fullname", "Cannot leave name field empty")
-    .isLength({ min: 3, max: 20 });
+    .isLength({ min: 3, max: 50 });
   req.checkBody("email", "Cannot leave email field empty").isEmail();
   req
     .checkBody("password", "Passwords dont match!")

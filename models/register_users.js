@@ -21,8 +21,16 @@ var UserSchema = mongoose.Schema({
     type: String
   },
 
-  active: {
-    type: Boolean
+  googleID: {
+    type: String
+  },
+
+  googleThumbnail: {
+    type: String
+  },
+
+  facebookID: {
+    type: String
   }
 });
 
@@ -42,7 +50,7 @@ UserSchema.pre("save", function(next) {
 });
 
 UserSchema.methods.comparePassword = function(password) {
-  if (password == this.password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 module.exports = mongoose.model("User", UserSchema, "registered_users");
