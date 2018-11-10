@@ -31,6 +31,9 @@ var UserSchema = mongoose.Schema({
 
   facebookID: {
     type: String
+  },
+  loggedIn: {
+    type: Boolean
   }
 });
 

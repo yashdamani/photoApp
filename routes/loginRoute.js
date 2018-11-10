@@ -33,6 +33,7 @@ passport.use(
         if (!user.comparePassword(password)) {
           return done(null, false);
         }
+
         return done(null, user);
       });
     }
@@ -46,8 +47,21 @@ Router.get("/", function(req, res) {
   passport.authenticate("local-login", {
     failureRedirect: "/login"
   }),
-  function(req, res) {
-    res.redirect("/");
+  function(req, res, callback) {
+    var randomNumber = Math.random().toString();
+    randomNumber = randomNumber.substring(2, randomNumber.length);
+    res.cookie("email", req.body.email, {
+      maxAge: Date.now() + 9000,
+      httpOnly: true
+    });
+    User.findOneAndUpdate(
+      { email: req.cookies.email },
+      { $set: { loggedIn: true } },
+      function(err, user) {
+        if (err) res.redirect("/login");
+        else res.redirect("/dashboard");
+      }
+    );
   }
 );
 

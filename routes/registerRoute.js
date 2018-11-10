@@ -36,6 +36,7 @@ Router.get("/", function(req, res) {
     user.email = req.body.email;
     user.password = req.body.password;
     user.token = vToken;
+    user.loggedIn = "false";
 
     user.save(function(err) {
       if (err) throw err;
@@ -58,7 +59,7 @@ Router.get("/", function(req, res) {
       if (error) {
         return console.log(error);
       }
-      console.log("Message sent 1: %s", info.messageId);
+      console.log("Message sent 1: ", info.messageId);
     });
   }
 });
