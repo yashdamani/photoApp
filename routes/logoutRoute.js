@@ -7,9 +7,9 @@ Router.get("/", function(req, res) {
     { email: req.cookies.email },
     { $set: { loggedIn: false } },
     function(err, user) {
+      res.clearCookie("email");
       if (err) res.redirect("/dashboard");
       else {
-        res.clearCookie("email");
         res.redirect("/");
       }
     }

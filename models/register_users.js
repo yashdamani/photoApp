@@ -21,6 +21,10 @@ var UserSchema = mongoose.Schema({
     type: String
   },
 
+  fToken: {
+    type: String
+  },
+
   googleID: {
     type: String
   },

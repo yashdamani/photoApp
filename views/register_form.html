@@ -36,7 +36,7 @@
     #square2 {
         width: 30%;
         position: absolute;
-        height: 60%;
+        height: 65%;
         margin-left: 35%;
         margin-top: 10%;
         background: #333333;
@@ -90,12 +90,6 @@
         <div class="title">
             <h2 id="register" style="margin-right: 20%; margin-left: 15%" onclick="toggle(this.id)">Register</h2>
             <h2 id="signin" onclick="toggle(this.id)">Sign In</h2>
-            <!-- <div class="large ui buttons" style="margin-left:25%">
-                    <button class="ui button" onclick="toggle(this.id)">Register</button>
-                    <div class="or"></div>
-                    <button class="ui positive button" onclick="toggle(this.id)">Login</button>
-                  </div>
-        </div> -->
         <form id="form2" class="ui form" method="POST", action="/login">
             <div class="field" style="margin-left: -50%">
                 <label style="color:#666666">EMAIL</label>
@@ -107,7 +101,7 @@
                 <button style="background-color: #33CC66; margin-left: 30%; margin-top: 5%; margin-bottom: 5%" class="ui button" type="submit"><span style="color:#FFFFFF">Submit</span></button>
                 <button style="background-color: #2962FF;" id="googleb" class="ui button" onclick="location.href='/auth/google'" type="button"><span style="color:#FFFFFF">Google</span></button>
                 <button style="background-color: #3B5998 ;" id="facebookb" class="ui button" onclick="location.href='/auth/facebook'" type="button"><span style="color:#FFFFFF">Facebook</span></button>
-
+                <div style="margin-left: 25%; margin-top:5%"><a href="http://localhost:3000/forgotpassword" style="color:#666666">Forgot your password?</a></div>
             </div>
         </form>
     </div>

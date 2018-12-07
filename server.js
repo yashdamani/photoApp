@@ -4,12 +4,14 @@ const validator = require("express-validator");
 const registerRoute = require("./routes/registerRoute");
 const resendEmail = require("./routes/resendEmail");
 const verificationEmail = require("./routes/verificationEmail");
+const forgotPasswordLink = require("./routes/fpasswordlink");
 const mongoose = require("mongoose");
 const authKeys = require("./config/keys");
 const passport = require("passport");
 const loginRoute = require("./routes/loginRoute");
 const authRoutes = require("./routes/authRoutes");
-var dashboardRoute = require("./routes/dashboard");
+const dashboardRoute = require("./routes/dashboard");
+const forgotPassword = require("./routes/forgotPassword");
 const logoutRoute = require("./routes/logoutRoute");
 const passportSetup = require("./config/passportSetup");
 const cookieSession = require("cookie-session");
@@ -42,6 +44,8 @@ app.use("/login", loginRoute);
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoute);
 app.use("/logout", logoutRoute);
+app.use("/forgotpassword", forgotPassword);
+app.use("/fpasswordLink", forgotPasswordLink);
 
 mongoose.connect(
   authKeys.mongoURI,

@@ -51,15 +51,15 @@ Router.get("/", function(req, res) {
     var randomNumber = Math.random().toString();
     randomNumber = randomNumber.substring(2, randomNumber.length);
     res.cookie("email", req.body.email, {
-      maxAge: Date.now() + 9000,
+      maxAge: 9000,
       httpOnly: true
     });
     User.findOneAndUpdate(
       { email: req.cookies.email },
       { $set: { loggedIn: true } },
-      function(err, user) {
+      function(err, data) {
         if (err) res.redirect("/login");
-        else res.redirect("/dashboard");
+        res.redirect("/dashboard");
       }
     );
   }
